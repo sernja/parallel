@@ -3,8 +3,7 @@
 
 #define N 512
 
-__global__ void inclusive_scan(int *d_in)
-{
+__global__ void inclusive_scan(int *d_in){
 	__shared__ int temp_in[N];
 
 	int i = threadIdx.x; 
@@ -12,8 +11,7 @@ __global__ void inclusive_scan(int *d_in)
 
 	__syncthreads();
 
-	for(unsigned int s = 1; s <= N-1; s <<= 1)
-	{
+	for(unsigned int s = 1; s <= N-1; s <<= 1){
 		if((i >= s) && (i < N)) {
 			int a = temp_in[i]; 
 			int b = temp_in[i-s];
@@ -26,8 +24,7 @@ __global__ void inclusive_scan(int *d_in)
 	d_in[i] = temp_in[i];
 }
 
-int main()
-{
+int main(){
 	int h_in[N];
 	int h_out[N];
 

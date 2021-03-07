@@ -3,12 +3,10 @@
 
 #define N 8
 
-__global__ void exclusive_scan(int *d_in)
-{
+__global__ void exclusive_scan(int *d_in){
     //Phase 1 (Uptree)
     int s = 1;
-    for(; s<=N-1; s<<=1)
-    {
+    for(; s<=N-1; s<<=1){
         int i = 2*s*(threadIdx.x+1)-1;
         if((i-s >= 0) && (i<N)) {
             //printf("s = %d, i= %d \n", s, i);
@@ -25,8 +23,7 @@ __global__ void exclusive_scan(int *d_in)
     if(threadIdx.x == 0)
         d_in[N-1] = 0;
     
-    for(s = s/2; s >= 1; s>>=1)
-    {
+    for(s = s/2; s >= 1; s>>=1){
         int i = 2*s*(threadIdx.x+1)-1;
         if((i-s >= 0) && (i<N)) {
             //printf("s = %d, i= %d \n", s, i);
@@ -42,8 +39,7 @@ __global__ void exclusive_scan(int *d_in)
     }
 }
 
-int main()
-{
+int main(){
 	int h_in[N];
 	int h_out[N];
 
